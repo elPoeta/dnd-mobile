@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="./css/styles.css">
+  <script src="./js/app.js" defer></script>
+  <title>DnD mobile</title>
+</head>
+
+<body>
+  <main>
+    <section class="elements">
+      <div class="operators">
+        <div class="draggable" draggable="true">+</div>
+        <div class="draggable" draggable="true">-</div>
+        <div class="draggable" draggable="true">*</div>
+        <div class="draggable" draggable="true">/</div>
+        <div class="draggable" draggable="true">=</div>
+        <div class="draggable" draggable="true">(</div>
+        <div class="draggable" draggable="true">)</div>
+      </div>
+      <div class="vars">
+        <div class="draggable" draggable="true">variable</div>
+        <div class="draggable" draggable="true">number</div>
+      </div>
+    </section>
+    <section class="dropBox">
+      <div id="dopZone" class="drop-zone"></div>
+    </section>
+    <section class="code-expression">
+      <input type="text" name="expression" id="exprsssion" disabled>
+    </section>
+  </main>
+</body>
+
+</html>
