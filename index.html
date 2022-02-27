@@ -6,7 +6,7 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="./css/styles.css">
-  <script src="./js/app.js" defer></script>
+  <script src="./js/app.js" type="module" defer></script>
   <title>DnD mobile</title>
 </head>
 
@@ -14,26 +14,28 @@
   <main>
     <section class="elements">
       <div class="operators">
-        <div class="draggable" draggable="true">+</div>
-        <div class="draggable" draggable="true">-</div>
-        <div class="draggable" draggable="true">*</div>
-        <div class="draggable" draggable="true">/</div>
-        <div class="draggable" draggable="true">=</div>
-        <div class="draggable" draggable="true">(</div>
-        <div class="draggable" draggable="true">)</div>
+        <div class="draggable bg-1" draggable="true">+</div>
+        <div class="draggable bg-2" draggable="true">-</div>
+        <div class="draggable bg-3" draggable="true">*</div>
+        <div class="draggable bg-4" draggable="true">/</div>
+        <div class="draggable bg-5" draggable="true">=</div>
+        <div class="draggable bg-6" draggable="true">(</div>
+        <div class="draggable bg-7" draggable="true">)</div>
       </div>
       <div class="vars">
-        <div class="draggable" draggable="true">variable</div>
-        <div class="draggable" draggable="true">number</div>
+        <div class="draggable bg-8" draggable="true">variable</div>
+        <div class="draggable bg-9" draggable="true">number</div>
       </div>
     </section>
     <section class="dropBox">
-      <div id="dopZone" class="drop-zone"></div>
-    </section>
-    <section class="code-expression">
-      <input type="text" name="expression" id="exprsssion" disabled>
+      <div id="dropZone" class="drop-zone"></div>
     </section>
   </main>
+  <section class="code-expression">
+    <input type="text" name="expression" id="expression" disabled>
+  </section>
+  <h2 id="status"></h2>
+  <h2 id="statusTouch"></h2>
 </body>
 
 </html>
