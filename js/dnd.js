@@ -58,10 +58,7 @@ class Dnd {
     ev.preventDefault();
     const target = ev.target;
     if (this.activeEvent === 'move') {
-      const pageX = (parseInt(target.style.left) - 20);
-      const pageY = (parseInt(target.style.top) - 20);
-      if (this.validDropZone(this.dropZone.offsetLeft, this.dropZone.offsetTop, pageX, pageY, this.dropZone.clientWidth, this.dropZone.clientHeight)) {
-        console.log(this.dropZone.offsetLeft, this.dropZone.offsetTop, pageX, pageY, this.dropZone.offsetWidth, this.dropZone.offsetHeight)
+      if (this.validDropZone(this.dropZone.getBoundingClientRect(), target)) {
         this.dropZone.appendChild(target);
         target.style.position = "initial";
         this.statusTouch.innerHTML = `touch end dropped ${target.innerText}`;
@@ -73,13 +70,21 @@ class Dnd {
     }
   }
 
-  validDropZone(x1, y1, x2, y2, w, h) {
-    if (x2 - x1 > w)
-      return false;
-    if (y2 - y1 > h)
-      return false;
-    return true;
+  validDropZone(dropBounding, target) {
+    const { top, left } = this.getCoords(target);
+    return (left > dropBounding.left && left < dropBounding.right) && (top > dropBounding.top && top < dropBounding.bottom);
+
   }
+  getCoords(elem) {
+    const box = elem.getBoundingClientRect();
+    return {
+      top: box.top + window.pageYOffset,
+      right: box.right + window.pageXOffset,
+      bottom: box.bottom + window.pageYOffset,
+      left: box.left + window.pageXOffset
+    };
+  }
+
 }
 
 export default Dnd;
