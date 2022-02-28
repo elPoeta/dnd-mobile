@@ -62,6 +62,7 @@ class Dnd {
       if (this.validDropZone(target)) {
         this.dropZone.appendChild(target);
         target.style.position = "initial";
+        target.style.opacity = 1;
         this.statusTouch.innerHTML = `touch end dropped ${target.innerText}`;
       } else {
         this.statusTouch.innerHTML = `touch end remove ${target.innerText}`;
