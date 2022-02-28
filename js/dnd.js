@@ -65,6 +65,7 @@ class Dnd {
         this.statusTouch.innerHTML = `touch end dropped ${target.innerText}`;
       } else {
         this.statusTouch.innerHTML = `touch end remove ${target.innerText}`;
+        this.removeTouchListeners(target);
         target.remove();
       }
       this.activeEvent = null;
@@ -97,6 +98,11 @@ class Dnd {
     };
   }
 
+  removeTouchListeners(target) {
+    target.removeEventListener('touchstart', this.handleTouchStart.bind(this));
+    target.removeEventListener('touchmove', this.handleTouchMove.bind(this));
+    target.removeEventListener('touchend', this.handleTouchEnd.bind(this));
+  }
 }
 
 export default Dnd;
