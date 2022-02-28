@@ -26,8 +26,7 @@ main {
   margin: 10px;
 }
 
-.operators > div,
-.vars > div {
+.draggable {
   padding: 5px;
   width: 3.5rem;
   height: 3.5rem;
@@ -63,7 +62,7 @@ main {
   background-color: deeppink;
 }
 
-.vars > div { 
+.draggable-vars { 
   width: fit-content;
 }
 .bg-8{
