@@ -50,6 +50,7 @@ class Dnd {
       target.style.left = pageX;
       target.style.top = pageY;
       this.activeEvent = 'move';
+      this.inDropZone(target);
     }
 
   }
@@ -58,7 +59,7 @@ class Dnd {
     ev.preventDefault();
     const target = ev.target;
     if (this.activeEvent === 'move') {
-      if (this.validDropZone(this.dropZone.getBoundingClientRect(), target)) {
+      if (this.validDropZone(target)) {
         this.dropZone.appendChild(target);
         target.style.position = "initial";
         this.statusTouch.innerHTML = `touch end dropped ${target.innerText}`;
@@ -67,10 +68,21 @@ class Dnd {
         target.remove();
       }
       this.activeEvent = null;
+      this.dropZone.style = `border: 2px solid #ccc`;
     }
   }
 
-  validDropZone(dropBounding, target) {
+
+  inDropZone(target) {
+    if (this.validDropZone(target)) {
+      this.dropZone.style = `border: 2px dashed green`;
+    } else {
+      this.dropZone.style = `border: 2px solid #ccc`;
+    }
+  }
+
+  validDropZone(target) {
+    const dropBounding = this.dropZone.getBoundingClientRect();
     const { top, left } = this.getCoords(target);
     return (left > dropBounding.left && left < dropBounding.right) && (top > dropBounding.top && top < dropBounding.bottom);
 
