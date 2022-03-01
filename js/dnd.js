@@ -20,7 +20,7 @@ class Dnd {
   handleTouchStart(ev) {
     ev.preventDefault();
     const target = ev.target;
-    if (target.getAttribute('draggable') && !this.activeEvent) {
+    if (target.getAttribute('draggable') && !this.activeEvent && !target.classList.contains('cloned')) {
       const touchLocation = ev.targetTouches[0];
       const pageX = (touchLocation.pageX - 20) + "px";
       const pageY = (touchLocation.pageY - 20) + "px";
