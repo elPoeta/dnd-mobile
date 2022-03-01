@@ -50,7 +50,7 @@ class Dnd {
       target.style.left = pageX;
       target.style.top = pageY;
       this.activeEvent = 'move';
-      this.inDropZone(target);
+      this.inDropZone(this.dropZone.getBoundingClientRect(), target);
     }
 
   }
@@ -59,11 +59,29 @@ class Dnd {
     ev.preventDefault();
     const target = ev.target;
     if (this.activeEvent === 'move') {
-      if (this.validDropZone(target)) {
-        this.dropZone.appendChild(target);
-        target.style.position = "initial";
-        target.style.opacity = 1;
-        this.statusTouch.innerHTML = `touch end dropped ${target.innerText}`;
+      const droppedZoneBox = this.dropZone.getBoundingClientRect();
+      if (this.validDropZone(droppedZoneBox, target)) {
+        const children = Array.from(this.dropZone.children);
+        let index = -1;
+        for (let i = 0; i < children.length; i++) {
+          if (this.validDropZone(children[i].getBoundingClientRect(), target)) {
+            index = i;
+            break;
+          }
+
+        }
+
+        if (index > -1) {
+          this.dropZone.insertBefore(target, this.dropZone.children[index + 1]);
+          target.style.position = "initial";
+          target.style.opacity = 1;
+          this.statusTouch.innerHTML = `touch end dropped ${target.innerText}`;
+        } else {
+          this.dropZone.appendChild(target);
+          target.style.position = "initial";
+          target.style.opacity = 1;
+          this.statusTouch.innerHTML = `touch end dropped ${target.innerText}`;
+        }
       } else {
         this.statusTouch.innerHTML = `touch end remove ${target.innerText}`;
         this.removeTouchListeners(target);
@@ -75,18 +93,17 @@ class Dnd {
   }
 
 
-  inDropZone(target) {
-    if (this.validDropZone(target)) {
+  inDropZone(box, target) {
+    if (this.validDropZone(box, target)) {
       this.dropZone.style = `border: 2px dashed green`;
     } else {
       this.dropZone.style = `border: 2px solid #ccc`;
     }
   }
 
-  validDropZone(target) {
-    const dropBounding = this.dropZone.getBoundingClientRect();
+  validDropZone(box, target) {
     const { top, left } = this.getCoords(target);
-    return (left > dropBounding.left && left < dropBounding.right) && (top > dropBounding.top && top < dropBounding.bottom);
+    return (left > box.left && left < box.right) && (top > box.top && top < box.bottom);
 
   }
   getCoords(elem) {
