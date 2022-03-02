@@ -3,18 +3,74 @@ class Dnd {
     this.status = document.querySelector('#status');
     this.statusTouch = document.querySelector('#statusTouch');
     this.activeEvent = null;
+    this.dragSourceItem = null;
+    this.dndEffect = 'copy';
     this.draggableElements = document.querySelectorAll('.draggable');
+    this.dropZone = document.querySelector('#dropZone');
     this.draggableElements.forEach(element => element.addEventListener('dragstart', this.handleDragStart.bind(this)));
+    this.draggableElements.forEach(element => element.addEventListener('dragend', this.handleDragEnd.bind(this)));
+    this.dropZone.addEventListener('dragover', this.handleDragOver.bind(this));
+    this.dropZone.addEventListener('dragenter', this.handleDragEnter.bind(this));
+    this.dropZone.addEventListener('dragleave', this.handleDragLeave.bind(this));
+    this.dropZone.addEventListener('drop', this.handleDrop.bind(this));
     this.draggableElements.forEach(element => element.addEventListener('touchstart', this.handleTouchStart.bind(this)));
     this.draggableElements.forEach(element => element.addEventListener('touchmove', this.handleTouchMove.bind(this)));
     this.draggableElements.forEach(element => element.addEventListener('touchend', this.handleTouchEnd.bind(this)));
-    this.dropZone = document.querySelector('#dropZone');
   }
 
   handleDragStart(ev) {
+    const target = ev.target;
+    target.style.opacity = '0.4';
+    this.dragSourceItem = target;
+    this.dndEffect = target.classList.contains('cloned') ? 'move' : 'copy';
+    ev.dataTransfer.effectAllowed = this.dndEffect;
+    console.log(">>>>> ", this.dndEffect)
+    ev.dataTransfer.setData('text/plain', target.innerText);
+    this.status.innerHTML = `start drag ${target.innerText}`;
+  }
+
+  handleDragOver(ev) {
     ev.preventDefault();
     const target = ev.target;
-    this.status.innerHTML = `start drag ${target.innerText}`;
+    // this.dropZone.style = `border: 2px dashed green`;
+    this.status.innerHTML = `over drag ${target.innerText}`;
+  }
+
+  handleDragEnter(ev) {
+    ev.preventDefault();
+    const target = ev.target;
+    this.dropZone.style = `border: 2px dashed green`;
+    this.status.innerHTML = `enter drag ${target.innerText}`;
+  }
+
+  handleDragLeave(ev) {
+    ev.preventDefault();
+    const target = ev.target;
+    this.dropZone.style = `border: 2px solid #ccc`;
+    this.status.innerHTML = `leave drag ${target.innerText}`;
+  }
+
+  handleDragEnd(ev) {
+    ev.stopPropagation();
+    const target = ev.target;
+    this.dragSourceItem.style.opacity = 1;
+    this.status.innerHTML = `end ${target.innerText}`;
+    this.dragSourceItem = null;
+    return false;
+  }
+
+  handleDrop(ev) {
+    ev.stopPropagation();
+    const target = ev.target;
+    const clone = this.dragSourceItem.cloneNode(true);
+    clone.style.opacity = 1;
+    clone.classList.add('cloned');
+    this.dropZone.appendChild(clone); //FIXME check if move or copy
+    clone.addEventListener('dragstart', this.handleDragStart.bind(this));
+    clone.addEventListener('dragend', this.handleDragEnd.bind(this));
+    this.dropZone.style = `border: 2px solid #ccc`;
+    this.status.innerHTML = `drop ${target.innerText}`;
+    return false;
   }
 
   handleTouchStart(ev) {
