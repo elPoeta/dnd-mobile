@@ -20,6 +20,7 @@ class Dnd {
 
   handleDragStart(ev) {
     const target = ev.target;
+    if (!target.closest('.draggable')) return;
     target.style.opacity = '0.4';
     this.dragSourceItem = target;
     this.dndEffect = target.classList.contains('cloned') ? 'move' : 'copy';
@@ -32,7 +33,6 @@ class Dnd {
   handleDragOver(ev) {
     ev.preventDefault();
     const target = ev.target;
-    // this.dropZone.style = `border: 2px dashed green`;
     this.status.innerHTML = `over drag ${target.innerText}`;
   }
 
@@ -69,6 +69,8 @@ class Dnd {
     clone.addEventListener('dragstart', this.handleDragStart.bind(this));
     clone.addEventListener('dragend', this.handleDragEnd.bind(this));
     this.dropZone.style = `border: 2px solid #ccc`;
+    const children = Array.from(this.dropZone.children);
+    document.querySelector('#expression').value = children.reduce((acc, curr) => acc + curr.innerText + ' ', '');
     this.status.innerHTML = `drop ${target.innerText}`;
     return false;
   }
@@ -138,6 +140,8 @@ class Dnd {
           target.style.opacity = 1;
           this.statusTouch.innerHTML = `touch end dropped ${target.innerText}`;
         }
+        const childrenBefore = Array.from(this.dropZone.children);
+        document.querySelector('#expression').value = childrenBefore.reduce((acc, curr) => acc + curr.innerText + ' ', '');
       } else {
         this.statusTouch.innerHTML = `touch end remove ${target.innerText}`;
         this.removeTouchListeners(target);
